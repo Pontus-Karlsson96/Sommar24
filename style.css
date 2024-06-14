@@ -95,3 +95,22 @@
     width: 60px;
 
 }
+
+#displayFinished {
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    background-color: #bef7ffe3;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+}
+
+#restartButtonFinished {
+    height: 40px;
+    width: 60px;
+
+}

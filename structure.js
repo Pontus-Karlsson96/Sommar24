@@ -21,6 +21,7 @@ function renderHeader(parent) {
     const restartButton = document.createElement('button');
     restartButton.id = 'restartButton';
     restartButton.innerText = 'restart';
+    restartButton.addEventListener("click", stateHandler.update);
 
     parent.appendChild(header);
     header.appendChild(scoreCounter);
@@ -70,14 +71,27 @@ function renderQuiz(parent) {
             event.preventDefault();
             const quizItem = event.currentTarget;
 
+
             if (event.target.textContent !== _state[currentPage].correct_answer) {
                 quizItem.classList.toggle('wrong');
                 quizItemClicked('wrong');
+                answeredQuestions.push(
+                    {
+                        question: _state[currentPage].question,
+                        correct_answer: _state[currentPage].correct_answer,
+                        user_answer: event.currentTarget.textContent
+                    })
                 numQuestion++;
             }
             else {
                 quizItem.classList.toggle('right');
                 quizItemClicked('right');
+                answeredQuestions.push(
+                    {
+                        question: _state[currentPage].question,
+                        correct_answer: _state[currentPage].correct_answer,
+                        user_answer: event.currentTarget.textContent
+                    })
                 numQuestion++;
                 score++;
             }
@@ -92,10 +106,10 @@ function quizItemClicked(answer) {
 
     switch (answer) {
         case 'wrong': popUp.id = 'popUpWrong';
-            popUp.innerHTML = `<h1>Wrong</h1><br><p>Current score: ${score}</p>`;
+            popUp.innerHTML = `<h1>Wrong</h1><br><p>Current score: ${score}/10</p>`;
             break;
         case 'right': popUp.id = 'popUpRight';
-            popUp.innerHTML = `<h1>CORRECT</h1><br><p>Current score: ${score + 1}</p>`;
+            popUp.innerHTML = `<h1>CORRECT</h1><br><p>Current score: ${score + 1}/10</p>`;
             break;
     }
 
@@ -109,10 +123,30 @@ function quizItemClicked(answer) {
     nextButton.addEventListener("click", function (event) {
         event.preventDefault;
         popUp.remove();
-        renderHeader(wrapper);
-        renderQuiz(wrapper);
+        if (answeredQuestions < 10) {
+            renderHeader(wrapper);
+            renderQuiz(wrapper);
+        } else {
+            gameFinished();
+        }
     });
+}
 
+function gameFinished(parent) {
+    const displayFinished = document.createElement('div');
+    displayFinished.id = 'displayFinished';
+    displayFinished.innerText = 'FINISHED';
+
+    const scoreFinished = document.createElement('div');
+    scoreFinished.innerHTML = `Score: ${score}/10`;
+    displayFinished.appendChild(scoreFinished);
+
+    const restartButton = document.createElement('button');
+    restartButton.id = 'restartButtonFinished';
+    restartButton.innerText = 'Restart';
+    parent.appendChild(displayFinished);
+    displayFinished.appendChild(restartButton);
+    restartButton.addEventListener("click", stateHandler.update)
 }
 
 
