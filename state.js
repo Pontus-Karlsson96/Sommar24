@@ -55,6 +55,7 @@ const stateHandler = {
     update: function refreshApp() {
         numQuestion = 0;
         score = 0;
+        answeredQuestions = [];
         console.log("update");
         const url = "https://opentdb.com/api.php?amount=10";
 

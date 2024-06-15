@@ -123,11 +123,11 @@ function quizItemClicked(answer) {
     nextButton.addEventListener("click", function (event) {
         event.preventDefault;
         popUp.remove();
-        if (answeredQuestions < 10) {
+        if (answeredQuestions.length < 10) {
             renderHeader(wrapper);
             renderQuiz(wrapper);
         } else {
-            gameFinished();
+            gameFinished(wrapper);
         }
     });
 }
@@ -140,6 +140,19 @@ function gameFinished(parent) {
     const scoreFinished = document.createElement('div');
     scoreFinished.innerHTML = `Score: ${score}/10`;
     displayFinished.appendChild(scoreFinished);
+
+    const answersTable = document.createElement('ul');
+    answersTable.id = 'answersTable';
+    scoreFinished.appendChild(answersTable);
+
+    for (let i = 0; i < answeredQuestions.length; i++) {
+        const item = document.createElement('li');
+        item.textContent = `${answeredQuestions[i].question} Your answer: ${answeredQuestions.user_answer} Correct answer: ${answeredQuestions.correct_answer}
+        `;
+        item.classList = 'answerTableItem';
+        answersTable.appendChild(item);
+    }
+
 
     const restartButton = document.createElement('button');
     restartButton.id = 'restartButtonFinished';
